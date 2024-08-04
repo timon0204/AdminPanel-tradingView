@@ -49,23 +49,42 @@ const Sidebar = ({ open, onClose }) => {
                 </IconButton>  
             </Box>  
             <List>  
-                <ListItem onClick={() => handleNavigation('/dashboard')} selected={selectedItem === '/dashboard'}>  
+                <ListItem   
+                    onClick={() => handleNavigation('/dashboard')}   
+                    selected={selectedItem === '/dashboard'}   
+                    sx={{ cursor: 'pointer', '&:hover': {fontWeight: 'bold', backgroundColor: '#f0f0f0'} }} // Change cursor to pointer  
+                >  
                     <ListItemIcon><DashboardIcon /></ListItemIcon>  
                     <ListItemText primary="Dashboard" style={{ fontWeight: selectedItem === '/dashboard' ? 'bold' : 'normal' }} />  
                 </ListItem>  
-                <ListItem onClick={() => handleNavigation('/userManagement')} selected={selectedItem === '/userManagement'}>  
+                <ListItem   
+                    onClick={() => handleNavigation('/userManagement')}   
+                    selected={selectedItem === '/userManagement'}   
+                    sx={{ cursor: 'pointer', '&:hover': {fontWeight: 'bold', backgroundColor: '#f0f0f0'} }} // Change cursor to pointer  
+                >  
                     <ListItemIcon><Group /></ListItemIcon>  
                     <ListItemText primary="Users" style={{ fontWeight: selectedItem === '/userManagement' ? 'bold' : 'normal' }} />  
                 </ListItem>  
-                <ListItem onClick={() => handleNavigation('/symbolManagement')} selected={selectedItem === '/symbolManagement'}>  
+                <ListItem   
+                    onClick={() => handleNavigation('/symbolManagement')}   
+                    selected={selectedItem === '/symbolManagement'}   
+                    sx={{ cursor: 'pointer', '&:hover': {fontWeight: 'bold', backgroundColor: '#f0f0f0'} }} // Change cursor to pointer  
+                >  
                     <ListItemIcon><EuroSymbol /></ListItemIcon>  
                     <ListItemText primary="Symbol" style={{ fontWeight: selectedItem === '/symbolManagement' ? 'bold' : 'normal' }} />  
                 </ListItem>  
-                <ListItem onClick={() => handleNavigation('/positionManagement')} selected={selectedItem === '/positionManagement'}>  
+                <ListItem   
+                    onClick={() => handleNavigation('/positionManagement')}   
+                    selected={selectedItem === '/positionManagement'}   
+                    sx={{ cursor: 'pointer', '&:hover': {fontWeight: 'bold', backgroundColor: '#f0f0f0'}}} // Change cursor to pointer  
+                >  
                     <ListItemIcon><MoneyTwoTone /></ListItemIcon>  
                     <ListItemText primary="Position" style={{ fontWeight: selectedItem === '/positionManagement' ? 'bold' : 'normal' }} />  
                 </ListItem>  
-                <ListItem onClick={handleLogout}>  
+                <ListItem   
+                    onClick={handleLogout}   
+                    sx={{ cursor: 'pointer', '&:hover': {fontWeight: 'bold', backgroundColor: '#f0f0f0'} }} // Change cursor to pointer  
+                >  
                     <ListItemIcon><ExitToApp /></ListItemIcon>  
                     <ListItemText primary="Logout" />  
                 </ListItem>  
