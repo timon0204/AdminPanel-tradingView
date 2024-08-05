@@ -25,6 +25,8 @@ import {
     Select,
     MenuItem,
     OutlinedInput,
+    Switch,
+    FormControlLabel,
     Snackbar,
     Alert,
 } from '@mui/material';
@@ -43,7 +45,7 @@ const UserManagement = ({ openSidebar }) => {
     const [openCreateModal, setOpenCreateModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUser, setSelectedUser] = useState({ allow: 'Block' });
     const [newUser, setNewUser] = useState({
         email: '',
         userName: '',
@@ -80,6 +82,13 @@ const UserManagement = ({ openSidebar }) => {
             .catch((err) => {
                 console.log('Error fetching accounts', err);
             });
+    };
+
+    const handleToggle = (event) => {
+        setSelectedUser({
+            ...selectedUser,
+            allow: event.target.checked ? 'Allow' : 'Block',
+        });
     };
 
     const validate = () => {
@@ -588,19 +597,16 @@ const UserManagement = ({ openSidebar }) => {
                                 }
                             />
 
-                            <Select
-                                fullWidth
-                                value={selectedUser.allow}
-                                onChange={(e) =>
-                                    setSelectedUser({
-                                        ...selectedUser,
-                                        allow: e.target.value,
-                                    })
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={selectedUser.allow === 'Allow'}
+                                        onChange={handleToggle}
+                                        name="allowToggle"
+                                    />
                                 }
-                            >
-                                <MenuItem value="Allow">Allow</MenuItem>
-                                <MenuItem value="Block">Block</MenuItem>
-                            </Select>
+                                label={selectedUser.allow}
+                            />
 
                             <TextField
                                 margin="dense"
