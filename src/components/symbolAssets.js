@@ -114,6 +114,11 @@ const SymbolAssets = ({ openSidebar }) => {
                 })
                 .then((res) => {
                     fetchSymbols();
+                    setNewSymbol({
+                        name: '',
+                        pip_size: '',
+                        status: '',
+                    });
                 })
                 .catch((error) => {});
             setOpenCreateModal(false);
@@ -285,7 +290,15 @@ const SymbolAssets = ({ openSidebar }) => {
             {/* Create symbol Modal */}
             <Dialog
                 open={openCreateModal}
-                onClose={() => setOpenCreateModal(false)}
+                onClose={() => {
+                    setNewSymbol({
+                        name: '',
+                        type: '',
+                        code: '',
+                        assetName: '',
+                    });
+                    setOpenCreateModal(false);
+                }}
             >
                 <DialogTitle>Create Symbol</DialogTitle>
                 <DialogContent>
@@ -322,13 +335,8 @@ const SymbolAssets = ({ openSidebar }) => {
                         helperText={errors.email}
                         required
                     />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Status"
-                        type="text"
+                    <Select
                         fullWidth
-                        variant="outlined"
                         value={newSymbol.status}
                         onChange={(e) =>
                             setNewSymbol({
@@ -336,10 +344,14 @@ const SymbolAssets = ({ openSidebar }) => {
                                 status: e.target.value,
                             })
                         }
-                        error={!!errors.email}
-                        helperText={errors.email}
-                        required
-                    />
+                        displayEmpty
+                    >
+                        <MenuItem value="" disabled>
+                            <em>Select asset status.</em>
+                        </MenuItem>
+                        <MenuItem value="Open">Open</MenuItem>
+                        <MenuItem value="Closed">Closed</MenuItem>
+                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -398,23 +410,20 @@ const SymbolAssets = ({ openSidebar }) => {
                                 helperText={errors.email}
                                 required
                             />
-                            <TextField
-                                margin="dense"
-                                label="Status"
-                                type="text"
+
+                            <Select
                                 fullWidth
-                                variant="outlined"
                                 value={selectedSymbol.status}
-                                onChange={(e) =>
+                                onChange={(e) => {
                                     setSelectedSymbol({
                                         ...selectedSymbol,
                                         status: e.target.value,
-                                    })
-                                }
-                                error={!!errors.email}
-                                helperText={errors.email}
-                                required
-                            />
+                                    });
+                                }}
+                            >
+                                <MenuItem value="Open">Open</MenuItem>
+                                <MenuItem value="Closed">Closed</MenuItem>
+                            </Select>
                         </>
                     )}
                 </DialogContent>
@@ -442,7 +451,15 @@ const SymbolAssets = ({ openSidebar }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        onClick={() => setOpenDeleteModal(false)}
+                        onClick={() => {
+                            setOpenDeleteModal(false);
+                            setNewSymbol({
+                                name: '',
+                                type: '',
+                                code: '',
+                                assetName: '',
+                            });
+                        }}
                         color="secondary"
                     >
                         Cancel
