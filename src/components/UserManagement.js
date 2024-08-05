@@ -114,7 +114,7 @@ const UserManagement = ({ openSidebar }) => {
                 .then((res) => {
                     fetchAccounts();
                 })
-                .catch((error) => { });
+                .catch((error) => {});
             setOpenCreateModal(false);
         }
     };
@@ -136,7 +136,7 @@ const UserManagement = ({ openSidebar }) => {
             .then((res) => {
                 fetchAccounts();
             })
-            .catch((error) => { });
+            .catch((error) => {});
         setOpenCreateModal(false);
         setOpenEditModal(false);
         setSelectedUser(null); // Clear selected user
@@ -157,7 +157,7 @@ const UserManagement = ({ openSidebar }) => {
                 fetchAccounts();
                 setOpenDeleteModal(false);
             })
-            .catch((error) => { });
+            .catch((error) => {});
         setOpenCreateModal(false);
     };
 
@@ -455,26 +455,30 @@ const UserManagement = ({ openSidebar }) => {
                         labelId="leverage-label"
                         value={newUser.leverage}
                         onChange={(e) => {
-                            setNewUser({ ...newUser, leverage: e.target.value });
+                            setNewUser({
+                                ...newUser,
+                                leverage: e.target.value,
+                            });
                         }}
                         style={{ width: '100%' }}
                         displayEmpty
                         input={<OutlinedInput label="" />}
                     >
                         <MenuItem value="">
-                            <span>Select Leverage</span> {/* Placeholder when nothing is selected */}
+                            <span>Select Leverage</span>{' '}
+                            {/* Placeholder when nothing is selected */}
                         </MenuItem>
                         {/* Leverage options */}
-                        <MenuItem value={1 / 10}>1:10</MenuItem>
-                        <MenuItem value={1 / 20}>1:20</MenuItem>
-                        <MenuItem value={1 / 30}>1:30</MenuItem>
-                        <MenuItem value={1 / 40}>1:40</MenuItem>
-                        <MenuItem value={1 / 50}>1:50</MenuItem>
-                        <MenuItem value={1 / 60}>1:60</MenuItem>
-                        <MenuItem value={1 / 100}>1:100</MenuItem>
-                        <MenuItem value={1 / 200}>1:200</MenuItem>
-                        <MenuItem value={1 / 500}>1:500</MenuItem>
-                        <MenuItem value={1 / 1000}>1:1000</MenuItem>
+                        <MenuItem value={1 * 10}>1:10</MenuItem>
+                        <MenuItem value={1 * 20}>1:20</MenuItem>
+                        <MenuItem value={1 * 30}>1:30</MenuItem>
+                        <MenuItem value={1 * 40}>1:40</MenuItem>
+                        <MenuItem value={1 * 50}>1:50</MenuItem>
+                        <MenuItem value={1 * 60}>1:60</MenuItem>
+                        <MenuItem value={1 * 100}>1:100</MenuItem>
+                        <MenuItem value={1 * 200}>1:200</MenuItem>
+                        <MenuItem value={1 * 500}>1:500</MenuItem>
+                        <MenuItem value={1 * 1000}>1:1000</MenuItem>
                     </Select>
                     <TextField
                         margin="dense"
@@ -633,14 +637,18 @@ const UserManagement = ({ openSidebar }) => {
                                 labelId="leverage-label"
                                 value={selectedUser.leverage}
                                 onChange={(e) => {
-                                    setSelectedUser({ ...selectedUser, leverage: e.target.value });
+                                    setSelectedUser({
+                                        ...selectedUser,
+                                        leverage: e.target.value,
+                                    });
                                 }}
                                 style={{ width: '100%' }}
                                 displayEmpty
                                 input={<OutlinedInput label="" />}
                             >
                                 <MenuItem value="">
-                                    <span>Select Leverage</span> {/* Placeholder when nothing is selected */}
+                                    <span>Select Leverage</span>{' '}
+                                    {/* Placeholder when nothing is selected */}
                                 </MenuItem>
                                 {/* Leverage options */}
                                 <MenuItem value={1 / 10}>1:10</MenuItem>
