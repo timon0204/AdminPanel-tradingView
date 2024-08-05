@@ -195,7 +195,7 @@ const SymbolManagement = ({ openSidebar }) => {
                     onClick={() => setOpenCreateModal(true)}
                     style={{ marginBottom: '20px', marginTop: '20px' }}
                 >
-                    Create User
+                    Create Symbol
                 </Button>
 
                 {loading ? (

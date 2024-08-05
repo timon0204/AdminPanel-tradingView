@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './App.css';
 
 const App = () => {
-    const [openSidebar, setOpenSidebar] = useState(true);
+    const [openSidebar, setOpenSidebar] = useState(false);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const token = localStorage.getItem('adminTrade');
     const toggleSidebar = () => {
@@ -26,7 +26,7 @@ const App = () => {
     console.log('this is a sidebar', openSidebar);
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 600) {
+            if (window.innerWidth < 600 && !token) {
                 setOpenSidebar(false);
             } else {
                 setOpenSidebar(true);

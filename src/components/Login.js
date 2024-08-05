@@ -44,7 +44,7 @@ const Login = () => {
   useEffect(() => {
     if(isAuthenticated) {
       console.log("this is a authenticated", isAuthenticated);
-      navigate('/dashboard');
+      navigate('/userManagement');
     }
   }, [isAuthenticated, navigate])
 
