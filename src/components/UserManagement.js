@@ -651,16 +651,16 @@ const UserManagement = ({ openSidebar }) => {
                                     {/* Placeholder when nothing is selected */}
                                 </MenuItem>
                                 {/* Leverage options */}
-                                <MenuItem value={1 / 10}>1:10</MenuItem>
-                                <MenuItem value={1 / 20}>1:20</MenuItem>
-                                <MenuItem value={1 / 30}>1:30</MenuItem>
-                                <MenuItem value={1 / 40}>1:40</MenuItem>
-                                <MenuItem value={1 / 50}>1:50</MenuItem>
-                                <MenuItem value={1 / 60}>1:60</MenuItem>
-                                <MenuItem value={1 / 100}>1:100</MenuItem>
-                                <MenuItem value={1 / 200}>1:200</MenuItem>
-                                <MenuItem value={1 / 500}>1:500</MenuItem>
-                                <MenuItem value={1 / 1000}>1:1000</MenuItem>
+                                <MenuItem value={1 * 10}>1:10</MenuItem>
+                                <MenuItem value={1 * 20}>1:20</MenuItem>
+                                <MenuItem value={1 * 30}>1:30</MenuItem>
+                                <MenuItem value={1 * 40}>1:40</MenuItem>
+                                <MenuItem value={1 * 50}>1:50</MenuItem>
+                                <MenuItem value={1 * 60}>1:60</MenuItem>
+                                <MenuItem value={1 * 100}>1:100</MenuItem>
+                                <MenuItem value={1 * 200}>1:200</MenuItem>
+                                <MenuItem value={1 * 500}>1:500</MenuItem>
+                                <MenuItem value={1 * 1000}>1:1000</MenuItem>
                             </Select>
 
                             <TextField
