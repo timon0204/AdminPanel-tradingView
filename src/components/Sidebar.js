@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Group, EuroSymbol, MoneyTwoTone } from '@mui/icons-material';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+
 import ExitToApp from '@mui/icons-material/ExitToApp';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -159,6 +161,23 @@ const Sidebar = ({ open, onClose }) => {
                     />
                 </ListItem>
                 <ListItem
+                    onClick={() => handleNavigation('/symbolAssets')}
+                    selected={selectedItem === '/symbolAssets'}
+                    sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                            fontWeight: 'bold',
+                            backgroundColor: '#f0f0f0',
+                        },
+                    }} // Change cursor to pointer
+                >
+                    <ListItemIcon>
+                        <TrendingUpIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Symbol Aseets" />
+                </ListItem>
+
+                <ListItem
                     onClick={handleLogout}
                     sx={{
                         cursor: 'pointer',
@@ -171,7 +190,7 @@ const Sidebar = ({ open, onClose }) => {
                     <ListItemIcon>
                         <ExitToApp />
                     </ListItemIcon>
-                    <ListItemText primary="Logout" />
+                    <ListItemText primary="LogOut" />
                 </ListItem>
             </List>
         </Drawer>

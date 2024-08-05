@@ -31,12 +31,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
-const SymbolManagement = ({ openSidebar }) => {
+const SymbolAssets = ({ openSidebar }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('adminTrade');
     const [symbols, setSymbol] = useState([]);
-    const [assetNames, setAssetName] = useState([]);
 
     // Modal States
     const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -45,10 +44,10 @@ const SymbolManagement = ({ openSidebar }) => {
     const [selectedSymbol, setSelectedSymbol] = useState(null);
     const [newSymbol, setNewSymbol] = useState({
         name: '',
-        type: '',
-        code: '',
-        assetName: '',
+        pip_size: '',
+        status: '',
     });
+    const [assetName, setAssetName] = useState('');
     const [errors, setErrors] = useState({});
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -65,14 +64,13 @@ const SymbolManagement = ({ openSidebar }) => {
 
     const fetchSymbols = async () => {
         await axios
-            .get(`${config.BackendEndpoint}/getSymbols`, {
+            .get(`${config.BackendEndpoint}/getAssets`, {
                 headers: {
                     Authorization: token ? token : '',
                 },
             })
             .then((res) => {
-                setSymbol(res.data.symbols);
-                setAssetName(res.data.assetNames);
+                setSymbol(res.data.assets);
             })
             .catch((err) => {
                 console.log('Error fetching symbols', err);
@@ -109,7 +107,7 @@ const SymbolManagement = ({ openSidebar }) => {
         if (validate()) {
             // Reset the form
             await axios
-                .post(`${config.BackendEndpoint}/createSymbol`, newSymbol, {
+                .post(`${config.BackendEndpoint}/createAsset`, newSymbol, {
                     headers: {
                         Authorization: token ? token : '',
                     },
@@ -123,16 +121,16 @@ const SymbolManagement = ({ openSidebar }) => {
     };
 
     const handleEditSymbol = (symbol) => {
-        symbol = { ...symbol, symbolId: symbol.id };
-        setOpenEditModal(true);
+        symbol = { ...symbol, assetId: symbol.id };
         setSelectedSymbol(symbol);
+        setOpenEditModal(true);
     };
 
     const handleUpdateSymbol = async () => {
         // Logic for updating symbol information
         await axios
             .post(
-                `${config.BackendEndpoint}/updateSymbol`,
+                `${config.BackendEndpoint}/updateAsset`,
                 {
                     ...selectedSymbol,
                 },
@@ -154,8 +152,8 @@ const SymbolManagement = ({ openSidebar }) => {
     const handleDeleteSymbol = async () => {
         await axios
             .post(
-                `${config.BackendEndpoint}/deleteSymbol`,
-                { symbolId: selectedSymbol.id },
+                `${config.BackendEndpoint}/deleteAsset`,
+                { assetId: selectedSymbol.id },
                 {
                     headers: {
                         Authorization: token ? token : '',
@@ -195,7 +193,7 @@ const SymbolManagement = ({ openSidebar }) => {
                         fontWeight: '1000',
                     }}
                 >
-                    Symbol Management
+                    Symbol Assets
                 </Typography>
                 <Button
                     variant="contained"
@@ -204,7 +202,7 @@ const SymbolManagement = ({ openSidebar }) => {
                     onClick={() => setOpenCreateModal(true)}
                     style={{ marginBottom: '20px', marginTop: '20px' }}
                 >
-                    Create Symbol
+                    Create Symbol Asset
                 </Button>
 
                 {loading ? (
@@ -216,7 +214,7 @@ const SymbolManagement = ({ openSidebar }) => {
                     >
                         <CircularProgress />
                     </Box>
-                ) : symbols.length > 0 ? ( // Ensure symbols is not empty
+                ) : symbols.length > 0 ? ( // Ensure accounts is not empty
                     <TableContainer component={Paper} style={{ width: '100%' }}>
                         <Table style={{ backgroundColor: '#f5f5f5' }}>
                             <TableHead>
@@ -230,18 +228,15 @@ const SymbolManagement = ({ openSidebar }) => {
                                         Name
                                     </TableCell>
                                     <TableCell style={{ color: '#fff' }}>
-                                        Type
+                                        PIP Size
                                     </TableCell>
                                     <TableCell style={{ color: '#fff' }}>
-                                        Code
-                                    </TableCell>
-
-                                    <TableCell style={{ color: '#fff' }}>
-                                        AssetName
+                                        Status
                                     </TableCell>
                                     <TableCell style={{ color: '#fff' }}>
                                         CreateAt
                                     </TableCell>
+
                                     <TableCell style={{ color: '#fff' }}>
                                         Action
                                     </TableCell>
@@ -251,12 +246,9 @@ const SymbolManagement = ({ openSidebar }) => {
                                 {symbols.map((symbol) => (
                                     <TableRow key={symbol.id}>
                                         <TableCell>{symbol.name}</TableCell>
-                                        <TableCell>{symbol.type}</TableCell>
-                                        <TableCell>{symbol.code}</TableCell>
+                                        <TableCell>{symbol.pip_size}</TableCell>
+                                        <TableCell>{symbol.status}</TableCell>
 
-                                        <TableCell>
-                                            {symbol.assetName}
-                                        </TableCell>
                                         <TableCell>
                                             {formatDate(symbol.createdAt)}
                                         </TableCell>
@@ -285,7 +277,7 @@ const SymbolManagement = ({ openSidebar }) => {
                     </TableContainer>
                 ) : (
                     <Typography variant="h6" style={{ color: 'white' }}>
-                        No symbol found.
+                        No symbol asset found.
                     </Typography>
                 )}
             </Box>
@@ -293,15 +285,7 @@ const SymbolManagement = ({ openSidebar }) => {
             {/* Create symbol Modal */}
             <Dialog
                 open={openCreateModal}
-                onClose={() => {
-                    setOpenCreateModal(false);
-                    setNewSymbol({
-                        name: '',
-                        type: '',
-                        code: '',
-                        assetName: '',
-                    });
-                }}
+                onClose={() => setOpenCreateModal(false)}
             >
                 <DialogTitle>Create Symbol</DialogTitle>
                 <DialogContent>
@@ -323,13 +307,16 @@ const SymbolManagement = ({ openSidebar }) => {
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Type"
-                        type="text"
+                        label="PIP size"
+                        type="number"
                         fullWidth
                         variant="outlined"
-                        value={newSymbol.type}
+                        value={newSymbol.pip_size}
                         onChange={(e) =>
-                            setNewSymbol({ ...newSymbol, type: e.target.value })
+                            setNewSymbol({
+                                ...newSymbol,
+                                pip_size: e.target.value,
+                            })
                         }
                         error={!!errors.email}
                         helperText={errors.email}
@@ -338,53 +325,25 @@ const SymbolManagement = ({ openSidebar }) => {
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Code"
+                        label="Status"
                         type="text"
                         fullWidth
                         variant="outlined"
-                        value={newSymbol.code}
+                        value={newSymbol.status}
                         onChange={(e) =>
-                            setNewSymbol({ ...newSymbol, code: e.target.value })
+                            setNewSymbol({
+                                ...newSymbol,
+                                status: e.target.value,
+                            })
                         }
                         error={!!errors.email}
                         helperText={errors.email}
                         required
                     />
-                    <Select
-                        fullWidth
-                        value={newSymbol.assetName}
-                        onChange={(e) => {
-                            setNewSymbol({
-                                ...newSymbol,
-                                assetName: e.target.value,
-                            });
-                        }}
-                        displayEmpty
-                    >
-                        <MenuItem value="" disabled>
-                            <em>Select an asset name.</em>
-                        </MenuItem>
-                        {assetNames &&
-                            assetNames.map((name, index) => {
-                                return (
-                                    <MenuItem key={index} value={name}>
-                                        {name}
-                                    </MenuItem>
-                                );
-                            })}
-                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        onClick={() => {
-                            setOpenCreateModal(false);
-                            setNewSymbol({
-                                name: '',
-                                type: '',
-                                code: '',
-                                assetName: '',
-                            });
-                        }}
+                        onClick={() => setOpenCreateModal(false)}
                         color="secondary"
                     >
                         Cancel
@@ -424,15 +383,15 @@ const SymbolManagement = ({ openSidebar }) => {
                             />
                             <TextField
                                 margin="dense"
-                                label="Type"
+                                label="PIP Size"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
-                                value={selectedSymbol.type}
+                                value={selectedSymbol.pip_size}
                                 onChange={(e) =>
                                     setSelectedSymbol({
                                         ...selectedSymbol,
-                                        type: e.target.value,
+                                        pip_size: e.target.value,
                                     })
                                 }
                                 error={!!errors.email}
@@ -441,38 +400,21 @@ const SymbolManagement = ({ openSidebar }) => {
                             />
                             <TextField
                                 margin="dense"
-                                label="Code"
+                                label="Status"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
-                                value={selectedSymbol.code}
+                                value={selectedSymbol.status}
                                 onChange={(e) =>
                                     setSelectedSymbol({
                                         ...selectedSymbol,
-                                        code: e.target.value,
+                                        status: e.target.value,
                                     })
                                 }
                                 error={!!errors.email}
                                 helperText={errors.email}
                                 required
                             />
-                            <Select
-                                fullWidth
-                                value={selectedSymbol.assetName}
-                                onChange={(e) => {
-                                    setSelectedSymbol({
-                                        ...selectedSymbol,
-                                        assetName: e.target.value,
-                                    });
-                                }}
-                            >
-                                {assetNames &&
-                                    assetNames.map((name, index) => (
-                                        <MenuItem key={index} value={name}>
-                                            {name}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
                         </>
                     )}
                 </DialogContent>
@@ -514,4 +456,4 @@ const SymbolManagement = ({ openSidebar }) => {
     );
 };
 
-export default SymbolManagement;
+export default SymbolAssets;

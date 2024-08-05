@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import UserManagement from './components/UserManagement';
 import SymbolManagement from './components/SymbolManagement';
 import PositionManagement from './components/PositionManagement';
+import SymbolAssets from './components/symbolAssets';
 import ProtectedRoute from './components/ProtectedRoute';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
@@ -16,7 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './App.css';
 
 const App = () => {
-    const [openSidebar, setOpenSidebar] = useState(true);
+    const [openSidebar, setOpenSidebar] = useState(false);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const token = localStorage.getItem('adminTrade');
     const toggleSidebar = () => {
@@ -32,9 +33,9 @@ const App = () => {
                 setOpenSidebar(true);
             }
         };
+
         window.addEventListener('resize', handleResize);
         handleResize(); // Call it initially to set the correct state
-
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -110,6 +111,14 @@ const App = () => {
                                         element={
                                             <ProtectedRoute>
                                                 <PositionManagement />
+                                            </ProtectedRoute>
+                                        }
+                                    />
+                                    <Route
+                                        path="/symbolAssets"
+                                        element={
+                                            <ProtectedRoute>
+                                                <SymbolAssets />
                                             </ProtectedRoute>
                                         }
                                     />
