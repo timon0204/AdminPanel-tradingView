@@ -27,7 +27,7 @@ const App = () => {
     console.log('this is a sidebar', openSidebar);
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 600) {
+            if (window.innerWidth < 600 && !token) {
                 setOpenSidebar(false);
             } else {
                 setOpenSidebar(true);
