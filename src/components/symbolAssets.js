@@ -24,6 +24,7 @@ import {
     IconButton,
     Select,
     MenuItem,
+    OutlinedInput,
     Snackbar,
     Alert,
 } from '@mui/material';
@@ -120,7 +121,7 @@ const SymbolAssets = ({ openSidebar }) => {
                         status: '',
                     });
                 })
-                .catch((error) => {});
+                .catch((error) => { });
             setOpenCreateModal(false);
         }
     };
@@ -148,7 +149,7 @@ const SymbolAssets = ({ openSidebar }) => {
             .then((res) => {
                 fetchSymbols();
             })
-            .catch((error) => {});
+            .catch((error) => { });
         setOpenCreateModal(false);
         setOpenEditModal(false);
         setSelectedSymbol(null); // Clear selected symbol
@@ -169,7 +170,7 @@ const SymbolAssets = ({ openSidebar }) => {
                 fetchSymbols();
                 setOpenDeleteModal(false);
             })
-            .catch((error) => {});
+            .catch((error) => { });
         setOpenCreateModal(false);
     };
 
@@ -300,7 +301,7 @@ const SymbolAssets = ({ openSidebar }) => {
                     setOpenCreateModal(false);
                 }}
             >
-                <DialogTitle>Create Symbol</DialogTitle>
+                <DialogTitle>Create Asset</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -317,24 +318,24 @@ const SymbolAssets = ({ openSidebar }) => {
                         helperText={errors.email}
                         required
                     />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="PIP size"
-                        type="number"
-                        fullWidth
-                        variant="outlined"
+                    <Select
+                        labelId="leverage-label"
                         value={newSymbol.pip_size}
-                        onChange={(e) =>
-                            setNewSymbol({
-                                ...newSymbol,
-                                pip_size: e.target.value,
-                            })
-                        }
-                        error={!!errors.email}
-                        helperText={errors.email}
-                        required
-                    />
+                        onChange={(e) => {
+                            setNewSymbol({ ...newSymbol, pip_size: e.target.value });
+                        }}
+                        style={{ minWidth: '100%' }}
+                        displayEmpty
+                        input={<OutlinedInput label="" />}
+                    >
+                        <MenuItem value="">
+                            <span>Select pip size</span> {/* Placeholder when nothing is selected */}
+                        </MenuItem>
+                        {/* Leverage options */}
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={0.01}>0.01</MenuItem>
+                        <MenuItem value={0.0001}>0.0001</MenuItem>
+                    </Select>
                     <Select
                         fullWidth
                         value={newSymbol.status}
@@ -347,7 +348,7 @@ const SymbolAssets = ({ openSidebar }) => {
                         displayEmpty
                     >
                         <MenuItem value="" disabled>
-                            <em>Select asset status.</em>
+                            <span>Select asset status.</span>
                         </MenuItem>
                         <MenuItem value="Open">Open</MenuItem>
                         <MenuItem value="Closed">Closed</MenuItem>
@@ -371,7 +372,7 @@ const SymbolAssets = ({ openSidebar }) => {
                 open={openEditModal}
                 onClose={() => setOpenEditModal(false)}
             >
-                <DialogTitle>Edit Symbol</DialogTitle>
+                <DialogTitle>Edit Asset</DialogTitle>
                 <DialogContent>
                     {selectedSymbol && (
                         <>
@@ -393,23 +394,25 @@ const SymbolAssets = ({ openSidebar }) => {
                                 helperText={errors.email}
                                 required
                             />
-                            <TextField
-                                margin="dense"
-                                label="PIP Size"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
+                            <Select
+                                labelId="leverage-label"
                                 value={selectedSymbol.pip_size}
-                                onChange={(e) =>
-                                    setSelectedSymbol({
-                                        ...selectedSymbol,
-                                        pip_size: e.target.value,
-                                    })
-                                }
-                                error={!!errors.email}
-                                helperText={errors.email}
+                                onChange={(e) => {
+                                    setSelectedSymbol({ ...selectedSymbol, pip_size: e.target.value });
+                                }}
+                                style={{ width: '100%' }}
+                                displayEmpty
+                                input={<OutlinedInput label="" />}
                                 required
-                            />
+                            >
+                                <MenuItem value="">
+                                    <span>Select pip size</span> {/* Placeholder when nothing is selected */}
+                                </MenuItem>
+                                {/* Leverage options */}
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={0.01}>0.01</MenuItem>
+                                <MenuItem value={0.0001}>0.0001</MenuItem>
+                            </Select>
 
                             <Select
                                 fullWidth
