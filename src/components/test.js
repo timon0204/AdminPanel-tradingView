@@ -17,31 +17,31 @@ import {
     CircularProgress,
 } from '@mui/material';
 
-const Dashboard = ({ openSidebar }) => {
+const SymbolManagement = ({ openSidebar }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('adminTrade');
-    const [accounts, setAccounts] = useState([]);
+    const [symbols, setSymbol] = useState([]);
 
     useEffect(() => {
         if (!token) {
             setLoading(true);
             navigate('/login');
         } else {
-            fetchAccounts();
+            fetchSymbols();
         }
         setLoading(false);
     }, [token, navigate]);
 
-    const fetchAccounts = async () => {
+    const fetchSymbols = async () => {
         await axios
-            .get(`${config.BackendEndpoint}/accounts`, {
+            .get(`${config.BackendEndpoint}/getSymbols`, {
                 headers: {
                     Authorization: token ? token : '',
                 },
             })
             .then((res) => {
-                setAccounts(res.data.users);
+                setSymbol(res.data.symbols);
             })
             .catch((err) => {
                 console.log('Error fetching accounts', err);
@@ -50,25 +50,19 @@ const Dashboard = ({ openSidebar }) => {
 
     return (
         <Container
-            style={{
-                marginTop: '30px',
-                width: '100%',
-                textAlign: 'center',
-                fontWeight: 'bold',
-            }}
+            style={{ marginTop: '30px', width: '100%', textAlign: 'center' }}
         >
             <Box flexGrow={1}>
                 <Typography
                     variant="h4"
                     style={{
-                        marginLeft: '5%',
+                        marginLeft: '10%',
                         color: 'white',
-                        fontWeight: '1000',
                         fontFamily: 'nycd',
-                        marginBottom: '40px',
+                        fontWeight: '1000',
                     }}
                 >
-                    Accounts Dashboard
+                    Symbol Management
                 </Typography>
                 {loading ? (
                     <Box
@@ -85,37 +79,39 @@ const Dashboard = ({ openSidebar }) => {
                             <TableHead>
                                 <TableRow
                                     style={{
-                                        backgroundColor: 'rgb(103, 191, 150)',
+                                        backgroundColor: 'rgb(13, 191, 150)',
                                         color: '#fff',
                                     }}
                                 >
                                     <TableCell style={{ color: '#fff' }}>
-                                        Account Type
+                                        Name
                                     </TableCell>
-                                    <TableCell>Balance</TableCell>
-                                    <TableCell>Equity</TableCell>
-                                    <TableCell>UserName</TableCell>
-                                    <TableCell>Margin</TableCell>
+                                    <TableCell style={{ color: '#fff' }}>
+                                        Type
+                                    </TableCell>
+                                    <TableCell style={{ color: '#fff' }}>
+                                        Code
+                                    </TableCell>
+                                    <TableCell style={{ color: '#fff' }}>
+                                        PipSize
+                                    </TableCell>
+                                    <TableCell style={{ color: '#fff' }}>
+                                        CreateAt
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {accounts &&
-                                    accounts.map((account) => (
-                                        <TableRow key={account.id}>
+                                {symbols &&
+                                    symbols.map((symbol) => (
+                                        <TableRow key={symbol.id}>
+                                            <TableCell>{symbol.name}</TableCell>
+                                            <TableCell>{symbol.type}</TableCell>
+                                            <TableCell>{symbol.code}</TableCell>
                                             <TableCell>
-                                                {account.email}
+                                                {symbol.pip_size}
                                             </TableCell>
                                             <TableCell>
-                                                {account.balance}
-                                            </TableCell>
-                                            <TableCell>
-                                                {account.leverage}
-                                            </TableCell>
-                                            <TableCell>
-                                                {account.userName}
-                                            </TableCell>
-                                            <TableCell>
-                                                {account.margin}
+                                                {symbol.createdAt}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -128,4 +124,4 @@ const Dashboard = ({ openSidebar }) => {
     );
 };
 
-export default Dashboard;
+export default SymbolManagement;
